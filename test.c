@@ -48,6 +48,10 @@ void interrupt_init (void) {
     GIE = 1; // global int enabled
 }
 
+char combineNibbles (unsigned char uNibble, unsigned char lNibble) {
+	return (uNibble & 0xF0) | lNibble;
+}
+
 void interrupt ISR () {
     GIE = 0;
 
@@ -57,14 +61,12 @@ void interrupt ISR () {
 		// send switch data
 		while(!TRMT);
 		ledValue = PORTB & 0xF0;
+
 		TXREG = ledValue;
+		PORTD = combineNibbles(ledValue, segmentValue & 0x0F);
 	}
 
     GIE = 1;
-}
-
- char combineNibbles (unsigned char uNibble, unsigned char lNibble) {
-	return (uNibble & 0xF0) | lNibble;
 }
 
 void main (void) {
@@ -89,7 +91,6 @@ void main (void) {
 
 		while(!RCIF);
 		segmentValue = RCREG;
-
 		PORTD = combineNibbles(ledValue, segmentValue & 0x0F);
     }
 }
