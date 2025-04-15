@@ -87,7 +87,7 @@ void main (void) {
 	interrupt_init();
 
     while (1) {
-		// delay (200);
+		delay (200);
 
 		while(!RCIF);
 		segmentValue = RCREG;
