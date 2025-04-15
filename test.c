@@ -56,7 +56,7 @@ void interrupt ISR () {
 
 		// send switch data
 		while(!TRMT);
-		ledValue = (PORTB & 0xF0) >> 4;
+		ledValue = PORTB & 0xF0;
 		TXREG = ledValue;
 	}
 
@@ -90,6 +90,6 @@ void main (void) {
 		while(!RCIF);
 		segmentValue = RCREG;
 
-		PORTD = combineNibbles(ledValue << 4, segmentValue & 0x0F);
+		PORTD = combineNibbles(ledValue, segmentValue & 0x0F);
     }
 }
